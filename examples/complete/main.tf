@@ -1,51 +1,30 @@
+# -----------------------------------------------------------------------------
+# Example: Cloud Armor
+#
+# End-to-end usage of terraform-google-cloud-armor. Provisions a security
+# policy with every input exercised, then wires the policy self_link into a
+# google_compute_backend_service to illustrate attachment.
+# -----------------------------------------------------------------------------
+
 module "cloud_armor" {
-  source = "git::https://github.com/nurdsoft/terraform-google-cloud-armor.git?ref=v0.1.0"
+  source = "../.."
 
-  project_id  = "my-gcp-project"
-  name        = "my-app-armor-policy"
-  description = "WAF for my-app frontend load balancer"
+  project_id  = var.project_id
+  name        = var.name
+  description = var.description
 
-  allowed_paths = [
-    "/robots.txt",
-    "/sitemap*",
-    "/llms.txt",
-    "/.well-known/*",
-  ]
+  allowed_paths       = var.allowed_paths
+  allowed_user_agents = var.allowed_user_agents
+  blocked_user_agents = var.blocked_user_agents
 
-  allowed_user_agents = [
-    "gptbot",
-    "chatgpt-user",
-    "perplexitybot",
-    "claudebot",
-    "google-extended",
-    "googlebot",
-    "bingbot",
-    "duckduckbot",
-  ]
+  enable_sqli_protection = var.enable_sqli_protection
+  sqli_sensitivity       = var.sqli_sensitivity
 
-  blocked_user_agents = [
-    "python-requests",
-    "scrapy",
-    "wget",
-    "ahrefsbot",
-    "semrushbot",
-    "bytespider",
-  ]
+  enable_rate_limit                 = var.enable_rate_limit
+  rate_limit_threshold_count        = var.rate_limit_threshold_count
+  rate_limit_threshold_interval_sec = var.rate_limit_threshold_interval_sec
 
-  enable_sqli_protection = true
-  sqli_sensitivity       = 2
-
-  enable_rate_limit                 = true
-  rate_limit_threshold_count        = 200
-  rate_limit_threshold_interval_sec = 60
-
-  preview_scraper_block = true
-  preview_sqli_block    = true
-  preview_rate_limit    = true
-}
-
-resource "google_compute_backend_service" "example" {
-  project         = "my-gcp-project"
-  name            = "my-app-backend"
-  security_policy = module.cloud_armor.self_link
+  preview_scraper_block = var.preview_scraper_block
+  preview_sqli_block    = var.preview_sqli_block
+  preview_rate_limit    = var.preview_rate_limit
 }
