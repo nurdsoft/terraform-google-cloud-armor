@@ -7,7 +7,7 @@
 # -----------------------------------------------------------------------------
 
 module "cloud_armor" {
-  source = "../.."
+  source = "git::https://github.com/nurdsoft/terraform-google-cloud-armor.git?ref=main"
 
   project_id  = var.project_id
   name        = var.name
