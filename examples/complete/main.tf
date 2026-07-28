@@ -7,7 +7,7 @@
 # -----------------------------------------------------------------------------
 
 module "cloud_armor" {
-  source = "git::https://github.com/nurdsoft/terraform-google-cloud-armor.git?ref=main"
+  source = "../.."
 
   project_id  = var.project_id
   name        = var.name
@@ -24,7 +24,9 @@ module "cloud_armor" {
   rate_limit_threshold_count        = var.rate_limit_threshold_count
   rate_limit_threshold_interval_sec = var.rate_limit_threshold_interval_sec
 
-  preview_scraper_block = var.preview_scraper_block
-  preview_sqli_block    = var.preview_sqli_block
-  preview_rate_limit    = var.preview_rate_limit
+  preview_path_allowlist = var.preview_path_allowlist
+  preview_ua_allowlist   = var.preview_ua_allowlist
+  preview_scraper_block  = var.preview_scraper_block
+  preview_sqli_block     = var.preview_sqli_block
+  preview_rate_limit     = var.preview_rate_limit
 }

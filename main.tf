@@ -1,6 +1,11 @@
 locals {
+  # Escape backslash then single-quote so caller input can't break the surrounding CEL string literal.
+  escaped_paths       = [for p in var.allowed_paths : replace(replace(p, "\\", "\\\\"), "'", "\\'")]
+  escaped_allowed_uas = [for u in var.allowed_user_agents : replace(replace(u, "\\", "\\\\"), "'", "\\'")]
+  escaped_blocked_uas = [for u in var.blocked_user_agents : replace(replace(u, "\\", "\\\\"), "'", "\\'")]
+
   path_allowlist_expr = join(" || ", [
-    for p in var.allowed_paths :
+    for p in local.escaped_paths :
     endswith(p, "*")
     ? format("request.path.startsWith('%s')", trimsuffix(p, "*"))
     : format("request.path == '%s'", p)
@@ -8,12 +13,12 @@ locals {
 
   allowed_ua_expr = format(
     "request.headers['user-agent'].matches('(?i)(?:%s)')",
-    join("|", var.allowed_user_agents),
+    join("|", local.escaped_allowed_uas),
   )
 
   blocked_ua_expr = format(
     "request.headers['user-agent'].matches('(?i)(?:%s)')",
-    join("|", var.blocked_user_agents),
+    join("|", local.escaped_blocked_uas),
   )
 }
 
@@ -28,6 +33,7 @@ resource "google_compute_security_policy" "this" {
     content {
       action      = "allow"
       priority    = 500
+      preview     = var.preview_path_allowlist
       description = "Path allowlist"
       match {
         expr {
@@ -42,6 +48,7 @@ resource "google_compute_security_policy" "this" {
     content {
       action      = "allow"
       priority    = 1000
+      preview     = var.preview_ua_allowlist
       description = "User-agent allowlist"
       match {
         expr {

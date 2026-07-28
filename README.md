@@ -133,13 +133,13 @@ Both `allowed_user_agents` and `blocked_user_agents` are joined into a single ca
 | Name | Version |
 |---|---|
 | terraform | >= 1.3 |
-| google | ~> 6.0 |
+| google | ~> 5.0 |
 
 ## Providers
 
 | Name | Version |
 |---|---|
-| [google](https://registry.terraform.io/providers/hashicorp/google/latest) | ~> 6.0 |
+| [google](https://registry.terraform.io/providers/hashicorp/google/latest) | ~> 5.0 |
 
 ## Inputs
 
@@ -154,7 +154,7 @@ Both `allowed_user_agents` and `blocked_user_agents` are joined into a single ca
 
 | Name | Description | Type | Default | Required |
 |---|---|---|---|---|
-| `description` | Human-readable description for the security policy. | `string` | `"Cloud Armor security policy managed by terraform-google-cloud-armor."` | no |
+| `description` | Human-readable description for the security policy. | `string` | `"Cloud Armor security policy managed by Terraform."` | no |
 | `allowed_paths` | Request paths that bypass all block rules. Entries ending in `*` use prefix matching (`startsWith`); others use exact match. Empty list → rule skipped. | `list(string)` | `["/robots.txt", "/sitemap.xml", "/llms.txt"]` | no |
 | `allowed_user_agents` | User-agent substrings (case-insensitive) that bypass all block rules. Empty list → rule skipped. | `list(string)` | AI/LLM + major search crawlers | no |
 | `blocked_user_agents` | User-agent substrings (case-insensitive) blocked with HTTP 403. Empty list → rule skipped. | `list(string)` | common scrapers | no |
@@ -163,6 +163,8 @@ Both `allowed_user_agents` and `blocked_user_agents` are joined into a single ca
 | `enable_rate_limit` | Enable the per-IP rate limit rule. | `bool` | `true` | no |
 | `rate_limit_threshold_count` | Requests per source IP per interval before rate limit fires. | `number` | `100` | no |
 | `rate_limit_threshold_interval_sec` | Rate limit window length in seconds. | `number` | `60` | no |
+| `preview_path_allowlist` | Run the path allowlist rule in preview mode. | `bool` | `false` | no |
+| `preview_ua_allowlist` | Run the user-agent allowlist rule in preview mode. | `bool` | `false` | no |
 | `preview_scraper_block` | Run the scraper block rule in preview mode. | `bool` | `false` | no |
 | `preview_sqli_block` | Run the SQLi block rule in preview mode. | `bool` | `false` | no |
 | `preview_rate_limit` | Run the rate limit rule in preview mode. | `bool` | `false` | no |

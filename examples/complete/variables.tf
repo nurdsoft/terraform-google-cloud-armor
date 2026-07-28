@@ -78,6 +78,18 @@ variable "rate_limit_threshold_interval_sec" {
   default     = 60
 }
 
+variable "preview_path_allowlist" {
+  description = "Run the path allowlist rule in preview mode."
+  type        = bool
+  default     = true
+}
+
+variable "preview_ua_allowlist" {
+  description = "Run the user-agent allowlist rule in preview mode."
+  type        = bool
+  default     = true
+}
+
 variable "preview_scraper_block" {
   description = "Run the scraper block rule in preview mode."
   type        = bool

@@ -11,7 +11,7 @@ variable "name" {
 variable "description" {
   description = "Human-readable description for the security policy."
   type        = string
-  default     = "Cloud Armor security policy managed by terraform-google-cloud-armor."
+  default     = "Cloud Armor security policy managed by Terraform."
 }
 
 variable "allowed_paths" {
@@ -92,6 +92,18 @@ variable "rate_limit_threshold_interval_sec" {
   description = "Rate limit window length in seconds."
   type        = number
   default     = 60
+}
+
+variable "preview_path_allowlist" {
+  description = "Run the path allowlist rule in preview mode (log a verdict but do not allow)."
+  type        = bool
+  default     = false
+}
+
+variable "preview_ua_allowlist" {
+  description = "Run the user-agent allowlist rule in preview mode (log a verdict but do not allow)."
+  type        = bool
+  default     = false
 }
 
 variable "preview_scraper_block" {
